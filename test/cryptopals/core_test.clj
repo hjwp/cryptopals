@@ -16,13 +16,16 @@
 
 
 ;; uh-oh, looks like i've [1decided to implement binary addition??
-
 (expect [1] (increment [0]))
 (expect [1 0] (increment [1]))
 (expect [1 1] (increment [1 0]))
 (expect [1 0 0] (increment [1 1]))
 (expect [1 0 1] (increment [1 0 0]))
 (expect [1 1 0] (increment [1 0 1]))
+; check it doesn't blow the stack
+(expect (repeat 100 1) (increment (concat (repeat 99 1) [0])))
+; neither should int->bin
+(expect [1 0 0 0 0 0 0 0 0 0 0 0 0 0] (int->bin 8192 [0]))
 
 
 ;; hex->bin helper function to convert hex strings to binary
@@ -51,3 +54,13 @@
 (expect "9" (base64char 61))
 (expect "+" (base64char 62))
 (expect "/" (base64char 63))
+
+(expect [0 0 0 0 0 1] (zero-pad [1]))
+(expect [0 0 0 0 0 1 0 1 0 1 0 1] (zero-pad [1 0 1 0 1 0 1]))
+
+
+;; and finally, our base64 function
+(expect "TWFu" (base64 "4d616e"))  ; from wikipedia. 0x11c = "Man"
+(expect
+ "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+ (base64 "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"))

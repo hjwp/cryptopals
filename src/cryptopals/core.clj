@@ -7,9 +7,9 @@
 
 (defn increment [binary-digits]
   (cond
-   (= 0 (last binary-digits)) (vec (concat (butlast binary-digits) [1]))
+   (= 0 (last binary-digits)) (concat (butlast binary-digits) [1])
    (= [1] binary-digits) [1 0]
-   true (vec (concat (increment (butlast binary-digits)) [0]))))
+   true (concat (increment (butlast binary-digits)) [0])))
 
 (defn int->bin [number accum]
   (if (= number 0) accum
@@ -33,3 +33,10 @@
    (= number 62) "+"
    (= number 63) "/"))
 
+(defn zero-pad [binary-digits]
+  (let [pad (- 6 (mod (count binary-digits) 6))]
+    (concat (repeat pad 0) binary-digits)))
+
+
+(defn base64 [hex-string]
+  (clojure.string/join (map base64char (map bin->int (partition 6 (zero-pad (hex->bin hex-string)))))))
