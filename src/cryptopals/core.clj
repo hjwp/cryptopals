@@ -11,13 +11,13 @@
    (= [1] binary-digits) [1 0]
    true (concat (increment (butlast binary-digits)) [0])))
 
-(defn int->bin [number accum]
-  (if (= number 0) accum
-    (int->bin (- number 1) (increment accum))))
+(defn int->bin [number]
+  (if (< number 2) [number]
+    (concat (int->bin (biginteger (/ number 2))) [(mod number 2)])))
 
 (defn hex->bin [hex-string]
   (if (re-matches #"[\da-f]+"  hex-string)
-    (int->bin (hex->int hex-string) [0])))
+    (int->bin (hex->int hex-string))))
 
 (defn bin->int [binary-digits]
   (read-string (str "2r" (clojure.string/join binary-digits))))

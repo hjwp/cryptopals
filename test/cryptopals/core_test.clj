@@ -25,7 +25,7 @@
 ; check it doesn't blow the stack
 (expect (repeat 100 1) (increment (concat (repeat 99 1) [0])))
 ; neither should int->bin
-(expect [1 0 0 0 0 0 0 0 0 0 0 0 0 0] (int->bin 8192 [0]))
+(expect [1 0 0 0 0 0 0 0 0 0 0 0 0 0] (int->bin 8192))
 
 
 ;; hex->bin helper function to convert hex strings to binary
