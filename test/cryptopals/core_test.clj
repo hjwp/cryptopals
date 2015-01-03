@@ -3,28 +3,13 @@
             [cryptopals.core :refer :all]))
 
 
-;; 49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
-;; should produce
-;; SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
-
 ;; hex->int helper function to convert hex strings to integers
 (expect 1 (hex->int "1"))
 (expect 10 (hex->int "a"))
 (expect 16 (hex->int "10"))
 (expect 26 (hex->int "1a"))
 (expect nil (hex->int "z"))
-
-
-;; uh-oh, looks like i've [1decided to implement binary addition??
-(expect [1] (increment [0]))
-(expect [1 0] (increment [1]))
-(expect [1 1] (increment [1 0]))
-(expect [1 0 0] (increment [1 1]))
-(expect [1 0 1] (increment [1 0 0]))
-(expect [1 1 0] (increment [1 0 1]))
-; check it doesn't blow the stack
-(expect (repeat 100 1) (increment (concat (repeat 99 1) [0])))
-; neither should int->bin
+; check int->bin helper function doesn't blow the stack
 (expect [1 0 0 0 0 0 0 0 0 0 0 0 0 0] (int->bin 8192))
 
 

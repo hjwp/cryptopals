@@ -4,13 +4,6 @@
   (if (re-matches #"[\da-f]+"  hex-string)
     (read-string (str "0x" hex-string))))
 
-
-(defn increment [binary-digits]
-  (cond
-   (= 0 (last binary-digits)) (concat (butlast binary-digits) [1])
-   (= [1] binary-digits) [1 0]
-   true (concat (increment (butlast binary-digits)) [0])))
-
 (defn int->bin [number]
   (if (< number 2) [number]
     (concat (int->bin (biginteger (/ number 2))) [(mod number 2)])))
