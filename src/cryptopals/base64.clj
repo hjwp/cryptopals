@@ -9,11 +9,11 @@
 
 (defn base64char [number]
   (cond
-   (< number 26) (str (char (+ A-offset number)))
-   (< number 52) (str (char (+ a-offset (- number 26))))
-   (< number 62) (str (- number 52))
-   (= number 62) "+"
-   (= number 63) "/"))
+   (< number 26) (char (+ A-offset number))
+   (< number 52) (char (+ a-offset (- number 26)))
+   (< number 62) (char (+ zero-offset (- number 52)))
+   (= number 62) \+
+   (= number 63) \/))
 
 
 (defn base64 [hex-string]

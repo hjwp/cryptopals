@@ -3,14 +3,14 @@
             [cryptopals.base64 :refer :all]))
 
 ;; base64 char of an integer
-(expect "A" (base64char 0))
-(expect "K" (base64char 10))
-(expect "a" (base64char 26))
-(expect "z" (base64char 51))
-(expect "0" (base64char 52))
-(expect "9" (base64char 61))
-(expect "+" (base64char 62))
-(expect "/" (base64char 63))
+(expect \A (base64char 0))
+(expect \K (base64char 10))
+(expect \a (base64char 26))
+(expect \z (base64char 51))
+(expect \0 (base64char 52))
+(expect \9 (base64char 61))
+(expect \+ (base64char 62))
+(expect \/ (base64char 63))
 
 
 ;; and finally, our base64 function
