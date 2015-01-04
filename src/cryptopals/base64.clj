@@ -5,24 +5,15 @@
 (def a-offset (int \a))
 (def zero-offset (int \0))
 
-(defn valid-hexchar? [character]
-  (re-matches #"[\da-f]+" (str character)))
 (defn valid-hexstring? [string]
   (re-matches #"[\da-f]+" string))
 
 (defn power [x n]
   (reduce * (repeat n x)))
 
-(defmulti hex->int (fn [input] (if (char? input) :char :string)))
-(defmethod hex->int :char [hex-char]
-  (if (valid-hexchar? hex-char)
-    (read-string (str "0x" hex-char))))
-(defmethod hex->int :string [hex-string]
+(defn hex->int [hex-string]
   (if (valid-hexstring? hex-string)
-    (let [length (count hex-string)]
-      (reduce + (map
-       (fn [pos] (* (power 16 (- length pos 1)) (hex->int (get hex-string pos))))
-       (range length))))))
+    (read-string (str "0x" hex-string))))
 
 (defn int->bin [number]
   (if (< number 2) [number]
