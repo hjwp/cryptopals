@@ -1,9 +1,6 @@
 (ns cryptopals.numbers
   (:require [clojure.string :as string]))
 
-(defn all [things predicate]
-  (= (count (filter predicate things)) (count things)))
-
 (defn zero-pad [binary-digits desired-num]
   (let [pad (- desired-num (mod (count binary-digits) desired-num))]
     (if (= pad desired-num)
@@ -15,7 +12,7 @@
   (re-matches #"[\da-f]+" (str character)))
 
 (defn valid-hexstring? [string]
-  (all string valid-hexchar?))
+  (every? valid-hexchar? string))
 
 
 (defn hexchar->int [character]
