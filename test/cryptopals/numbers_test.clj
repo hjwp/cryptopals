@@ -47,3 +47,16 @@
 (expect 1 (bin->int [1]))
 (expect 2 (bin->int [1 0]))
 (expect 3 (bin->int [1 1]))
+
+;; convert binary sequence back to hex
+(expect \0 (bin->hexchar [0]))
+(expect \1 (bin->hexchar [1]))
+(expect \2 (bin->hexchar [1 0]))
+(expect \a (bin->hexchar [1 0 1 0]))
+(expect \f (bin->hexchar [1 1 1 1]))
+
+(expect "0" (bin->hex [0]))
+(expect "1" (bin->hex [1]))
+(expect "2" (bin->hex [1 0]))
+(expect "3" (bin->hex [1 1]))
+(expect "10" (bin->hex [0 0 0 1 0 0 0 0]))

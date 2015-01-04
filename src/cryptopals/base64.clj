@@ -3,10 +3,6 @@
    [clojure.string :as string]
    [cryptopals.numbers :refer :all]))
 
-(def A-offset (int \A))
-(def a-offset (int \a))
-(def zero-offset (int \0))
-
 (defn base64char [number]
   (cond
    (< number 26) (char (+ A-offset number))

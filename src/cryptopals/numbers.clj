@@ -41,3 +41,18 @@
 
 (defn bin->int [binary-digits]
   (read-string (str "2r" (string/join binary-digits))))
+
+
+(def A-offset (int \A))
+(def a-offset (int \a))
+(def zero-offset (int \0))
+
+(defn bin->hexchar [binary-digits]
+  (let [number (bin->int binary-digits)]
+    (cond
+     (< number 10) (char (+ zero-offset number))
+     (< number 16) (char (+ a-offset (- number 10))))))
+
+
+(defn bin->hex [binary-digits]
+  (string/join (map bin->hexchar (partition 4 (zero-pad binary-digits 4)))))
