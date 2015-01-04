@@ -1,4 +1,5 @@
-(ns cryptopals.core)
+(ns cryptopals.core
+  (:require [clojure.string :as string]))
 
 (defn hex->int [hex-string]
   (if (re-matches #"[\da-f]+"  hex-string)
@@ -32,4 +33,4 @@
 
 
 (defn base64 [hex-string]
-  (clojure.string/join (map base64char (map bin->int (partition 6 (zero-pad (hex->bin hex-string)))))))
+  (string/join (map base64char (map bin->int (partition 6 (zero-pad (hex->bin hex-string)))))))
