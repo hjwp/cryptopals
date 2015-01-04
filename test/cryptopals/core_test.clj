@@ -4,8 +4,8 @@
 
 
 ;; hex->int helper function to convert hex strings to integers
-(expect 1 (hex->int "1"))
-(expect 10 (hex->int "a"))
+(expect 1 (hex->int \1))
+(expect 10 (hex->int \a))
 (expect 16 (hex->int "10"))
 (expect 26 (hex->int "1a"))
 (expect nil (hex->int "z"))
