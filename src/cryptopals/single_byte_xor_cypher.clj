@@ -2,7 +2,7 @@
   (:require
    [cryptopals.numbers :refer :all]))
 
-(def letter-frequencies
+(def standard-frequencies
   {\a 8.167
    \b 1.492
    \c 2.782
@@ -30,7 +30,17 @@
    \y 1.974
    \z 0.074})
 
-(def letters (keys letter-frequencies))
+(def letters (keys standard-frequencies))
+
+(defn map-over-hash [function hashmap]
+  (into {} (for [[key, val] hashmap]
+             [key (function val)])))
+
+
+(defn expected-frequencies [string-length]
+    (into {} (for [[letter frequency] standard-frequencies]
+               [letter
+                (* frequency string-length)])))
 
 (defn in [haystack needle]
   (some #(= % needle) haystack))
@@ -42,3 +52,15 @@
                 (if (in string letter)
                     (count (get grouped letter))
                     0)]))))
+
+(defn letter-frequencies [string]
+  (map-over-hash
+   (fn [letter-count] (/ (* 100 letter-count) (count string)))
+   (count-letters string)))
+
+(defn score [string]
+  (let [actual-frequencies (letter-frequencies string)]
+    (- 100
+       (reduce +
+               (for [letter letters]
+                   (- (standard-frequencies letter) (actual-frequencies letter)))))))

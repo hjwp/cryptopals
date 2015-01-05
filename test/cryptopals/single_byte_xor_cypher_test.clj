@@ -1,5 +1,6 @@
 (ns cryptopals.single-byte-xor-cypher-test
   (:require [expectations :refer [expect]]
+            [clojure.string :as string]
             [cryptopals.single-byte-xor-cypher :refer :all]))
 
 
@@ -46,3 +47,24 @@
    \y 0
    \z 0}
  (count-letters "helloworld"))
+
+(expect 100 ((letter-frequencies "a") \a))
+(expect 0   ((letter-frequencies "a") \b))
+(expect 50  ((letter-frequencies "ab") \a))
+(expect 50  ((letter-frequencies "ab") \b))
+
+
+(def almost-perfect-string
+  (string/join (for [letter letters]
+                 [(string/join (repeat
+                                (int (* 1000 (standard-frequencies letter)))
+                                letter))])))
+
+(expect (* 10 (standard-frequencies \a))
+        ((expected-frequencies 10) \a))
+
+(expect (* 12 (standard-frequencies \b))
+        ((expected-frequencies 12) \b))
+
+
+(expect 99 (int (score almost-perfect-string)))
