@@ -66,4 +66,13 @@
 (expect "10" (bin->hex [0 0 0 1 0 0 0 0]))
 
 (expect "a" (int->hex 10))
-; de-hex-encode strings
+
+; hex to and from ascii strings/characters
+(expect \a (hex->char "61"))
+(expect \z (hex->char "7a"))
+(expect "farts" (hex->string "6661727473"))
+
+(expect "63" (char->hex \c))
+(expect "77" (char->hex \w))
+(expect "6377" (string->hex "cw"))
+(expect "706c696e7468" (string->hex "plinth"))

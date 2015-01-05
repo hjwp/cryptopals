@@ -56,3 +56,20 @@
 
 (defn int->hex [number]
   (bin->hex (int->bin number)))
+
+
+(defn hex->char [hex-digit]
+  (char (hexchar->int hex-digit)))
+
+(defn hexstring->hexchars [hex-string]
+  (map string/join (partition 2 hex-string)))
+
+(defn hex->string [hex-string]
+  (string/join (map hex->char (hexstring->hexchars hex-string))))
+
+
+(defn char->hex [character]
+  (string/join (bin->hex (int->bin (int character)))))
+
+(defn string->hex [string]
+  (string/join (map char->hex string)))
