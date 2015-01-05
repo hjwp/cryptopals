@@ -1,5 +1,5 @@
 (ns cryptopals.base64-test
-  (:require [expectations :refer :all]
+  (:require [expectations :refer [expect]]
             [cryptopals.base64 :refer :all]))
 
 ;; base64 char of an integer

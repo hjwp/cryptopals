@@ -1,5 +1,5 @@
 (ns cryptopals.single-byte-xor-cypher-test
-  (:require [expectations :refer :all]
+  (:require [expectations :refer [expect]]
             [cryptopals.single-byte-xor-cypher :refer :all]))
 
 

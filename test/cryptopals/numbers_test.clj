@@ -1,5 +1,5 @@
 (ns cryptopals.numbers-test
-  (:require [expectations :refer :all]
+  (:require [expectations :refer [expect]]
             [cryptopals.numbers :refer :all]))
 
 
