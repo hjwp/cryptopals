@@ -30,7 +30,15 @@
    \y 1.974
    \z 0.074})
 
-(defn count-letters [string]
-  {})
+(def letters (keys letter-frequencies))
 
-(contains? {:a 1 :b 2} :a)
+(defn in [haystack needle]
+  (some #(= % needle) haystack))
+
+(defn count-letters [string]
+  (let [grouped (group-by identity string)]
+    (into {} (for [letter letters]
+               [letter
+                (if (in string letter)
+                    (count (get grouped letter))
+                    0)]))))
