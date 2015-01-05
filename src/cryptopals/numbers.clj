@@ -53,3 +53,6 @@
 
 (defn bin->hex [binary-digits]
   (string/join (map bin->hexchar (partition 4 (zero-pad binary-digits 4)))))
+
+(defn int->hex [number]
+  (bin->hex (int->bin number)))

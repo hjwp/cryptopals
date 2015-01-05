@@ -60,3 +60,6 @@
 (expect "2" (bin->hex [1 0]))
 (expect "3" (bin->hex [1 1]))
 (expect "10" (bin->hex [0 0 0 1 0 0 0 0]))
+
+(expect "a" (int->hex 10))
+; de-hex-encode strings

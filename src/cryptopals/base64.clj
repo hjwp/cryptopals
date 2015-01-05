@@ -12,5 +12,6 @@
    (= number 63) \/))
 
 
+
 (defn base64 [hex-string]
   (string/join (map base64char (map bin->int (partition 6 (zero-pad (hex->bin hex-string) 6))))))
