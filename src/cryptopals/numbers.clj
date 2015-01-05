@@ -23,13 +23,13 @@
 (defn int->bin [number]
   (cond
    (< number 2) [number]
-   (> number 15) nil
-   :else (concat (int->bin (int (/ number 2))) [(mod number 2)])))
+   :else (concat
+          (int->bin (int (/ number 2)))
+          [(mod number 2)])))
 
 
 (defn hexchar->bin [character]
   (int->bin (hexchar->int character)))
-
 
 (defn hex->bin [hex-string]
   (if (valid-hexstring? hex-string)

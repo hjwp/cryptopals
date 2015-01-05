@@ -10,15 +10,19 @@
 (expect 15 (hexchar->int \f))
 (expect nil (hexchar->int \g))
 
-; int->bin helper should allow numbers greater than a single hex char repr
-(expect nil (int->bin  16))
-
 
 (expect [0 0 1] (zero-pad [1] 3))
 (expect [0 0 1] (zero-pad [0 0 1] 3))
 (expect [1 0 1] (zero-pad [1 0 1] 3))
 (expect [0 0 0 0 0 1] (zero-pad [1] 6))
 (expect [0 0 0 0 0 1 0 1 0 1 0 1] (zero-pad [1 0 1 0 1 0 1] 6))
+
+; int->bin converts ints to binary representation
+(expect [0] (int->bin 0))
+(expect [1] (int->bin 1))
+(expect [1 0] (int->bin 2))
+(expect [1 0 0 0] (int->bin 8))
+(expect [1 0 0 0 0 0 1] (int->bin 65))
 
 
 ;; hex->bin helper function to convert hex strings to binary
