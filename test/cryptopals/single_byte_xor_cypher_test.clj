@@ -1,7 +1,10 @@
 (ns cryptopals.single-byte-xor-cypher-test
-  (:require [expectations :refer [expect]]
-            [clojure.string :as string]
-            [cryptopals.single-byte-xor-cypher :refer :all]))
+  (:require
+   [expectations :refer [expect]]
+   [clojure.string :as string]
+   [cryptopals.numbers :refer :all]
+   [cryptopals.single-byte-xor-cypher :refer :all]
+   [cryptopals.fixed-xor :refer :all]))
 
 
 ;; Single-byte XOR cipher
@@ -15,7 +18,7 @@
 
 ;; Achievement Unlocked
 ;; You now have our permission to make "ETAOIN SHRDLU" jokes on Twitter.
-
+(def secret "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
 
 ;; counting letter frequencies:
 
@@ -34,7 +37,7 @@
    \l 3
    \m 0
    \n 0
-   \o 2`
+   \o 2
    \p 0
    \q 0
    \r 1
@@ -68,3 +71,9 @@
 
 
 (expect 99 (int (score almost-perfect-string)))
+
+
+(map #(hexor-single-byte secret %) letters)
+
+
+(map hex->string (map #(hexor-single-byte secret %) "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))

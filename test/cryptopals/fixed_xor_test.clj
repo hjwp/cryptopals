@@ -1,5 +1,6 @@
 (ns cryptopals.fixed-xor-test
   (:require [expectations :refer [expect]]
+            [cryptopals.numbers :refer :all]
             [cryptopals.fixed-xor :refer :all]))
 
 ;; Fixed XOR
@@ -16,3 +17,7 @@
  "746865206b696420646f6e277420706c6179"
  (hexor "1c0111001f010100061a024b53535009181c" "686974207468652062756c6c277320657965"))
 
+; 0x61 = a
+(expect
+ (hexor "abc123" "616161")
+ (hexor-single-byte "abc123" \a))
