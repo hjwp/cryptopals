@@ -18,7 +18,6 @@
 
 ;; Achievement Unlocked
 ;; You now have our permission to make "ETAOIN SHRDLU" jokes on Twitter.
-(def secret "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
 
 ;; counting letter frequencies:
 
@@ -56,8 +55,10 @@
 
 (expect 99 (int (score almost-perfect-string)))
 
+(def secret "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
 
-(map #(hexor-single-byte secret %) letters)
+(def decrypts (map hex->string (map #(hexor-single-byte secret %) "ABCDEFGHIJKLMNOPQRSTUVWXYZ")))
+decrypts
 
+(last (sort (zipmap (map score decrypts) decrypts)))
 
-(map hex->string (map #(hexor-single-byte secret %) "ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
