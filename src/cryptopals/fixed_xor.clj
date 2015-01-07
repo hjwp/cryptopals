@@ -1,7 +1,7 @@
 (ns cryptopals.fixed-xor
   (:require
    [clojure.string :as string]
-   [cryptopals.numbers :refer :all]))
+   [cryptopals.bytes :refer :all]))
 
 (defn ziplists [list1 list2]
   (map vector list1 list2))

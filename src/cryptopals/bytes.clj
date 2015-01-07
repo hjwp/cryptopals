@@ -1,4 +1,4 @@
-(ns cryptopals.numbers
+(ns cryptopals.bytes
   (:require [clojure.string :as string]))
 
 (defn zero-pad [binary-digits desired-num]

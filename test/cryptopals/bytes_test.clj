@@ -1,6 +1,6 @@
-(ns cryptopals.numbers-test
+(ns cryptopals.bytes-test
   (:require [expectations :refer [expect]]
-            [cryptopals.numbers :refer :all]))
+            [cryptopals.bytes :refer :all]))
 
 
 ;; hexchar->int helper function to convert hex characters to integers

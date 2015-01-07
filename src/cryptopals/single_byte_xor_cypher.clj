@@ -1,7 +1,7 @@
 (ns cryptopals.single-byte-xor-cypher
   (:require
    [clojure.string :as string]
-   [cryptopals.numbers :refer :all]))
+   [cryptopals.bytes :refer :all]))
 
 (def standard-frequencies
   {\a 8.167

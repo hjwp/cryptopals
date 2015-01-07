@@ -2,7 +2,7 @@
   (:require
    [expectations :refer [expect]]
    [clojure.string :as string]
-   [cryptopals.numbers :refer :all]
+   [cryptopals.bytes :refer :all]
    [cryptopals.single-byte-xor-cypher :refer :all]
    [cryptopals.fixed-xor :refer :all]))
 

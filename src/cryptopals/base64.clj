@@ -1,7 +1,7 @@
 (ns cryptopals.base64
   (:require
    [clojure.string :as string]
-   [cryptopals.numbers :refer :all]))
+   [cryptopals.bytes :refer :all]))
 
 (defn base64char [number]
   (cond

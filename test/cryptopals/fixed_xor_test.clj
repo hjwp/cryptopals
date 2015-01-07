@@ -1,6 +1,6 @@
 (ns cryptopals.fixed-xor-test
   (:require [expectations :refer [expect]]
-            [cryptopals.numbers :refer :all]
+            [cryptopals.bytes :refer :all]
             [cryptopals.fixed-xor :refer :all]))
 
 ;; Fixed XOR
