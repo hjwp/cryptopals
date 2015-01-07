@@ -1,5 +1,6 @@
 (ns cryptopals.single-byte-xor-cypher
   (:require
+   [clojure.string :as string]
    [cryptopals.numbers :refer :all]))
 
 (def standard-frequencies
@@ -45,13 +46,16 @@
 (defn in [haystack needle]
   (some #(= % needle) haystack))
 
+(defmulti lowercase (fn [string-or-char] (if (char? string-or-char) :char :string)))
+(defmethod lowercase :char [character] (first (string/lower-case character)))
+(defmethod lowercase :string [string] (string/lower-case string))
+
 (defn count-letters [string]
-  (let [grouped (group-by identity string)]
-    (into {} (for [letter letters]
-               [letter
-                (if (in string letter)
-                    (count (get grouped letter))
-                    0)]))))
+  (into {} (for [letter letters]
+             [letter
+              (if (in (lowercase string) letter)
+                (count (filter #(= letter (lowercase %)) string))
+                0)])))
 
 (defn letter-frequencies [string]
   (map-over-hash
