@@ -1,6 +1,7 @@
 (ns cryptopals.single-byte-xor-cypher
   (:require
    [clojure.string :as string]
+   [cryptopals.fixed-xor :refer :all]
    [cryptopals.bytes :refer :all]))
 
 (def standard-frequencies
@@ -68,3 +69,18 @@
        (reduce +
                (for [letter letters]
                    (- (standard-frequencies letter) (actual-frequencies letter)))))))
+
+
+(defn get-all-decrypts [secret]
+  (for [letter "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+    (let [decrypted (hex->string (hexor-single-byte secret letter))]
+      {:score (score decrypted)
+       :plaintext decrypted})))
+
+(get-all-decrypts "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+
+
+(sort-by #(% :score) (get-all-decrypts "abc"))
+
+(defn most-likely-single-byte-xor-decrypt [secret]
+  (last (sort-by #(% :score) (get-all-decrypts secret))))

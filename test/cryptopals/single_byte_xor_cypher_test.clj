@@ -55,10 +55,14 @@
 
 (expect 99 (int (score almost-perfect-string)))
 
+
 (def secret "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
 
-(def decrypts (map hex->string (map #(hexor-single-byte secret %) "ABCDEFGHIJKLMNOPQRSTUVWXYZ")))
-decrypts
+(def answer (most-likely-single-byte-xor-decrypt secret))
 
-(last (sort (zipmap (map score decrypts) decrypts)))
+(expect #(> % 79) (answer :score))
 
+(expect
+ "bacon"
+ (re-find  #"bacon"
+           ((most-likely-single-byte-xor-decrypt secret) :plaintext)))
