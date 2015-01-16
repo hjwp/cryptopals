@@ -39,11 +39,6 @@
              [key (function val)])))
 
 
-(defn expected-frequencies [string-length]
-    (into {} (for [[letter frequency] standard-frequencies]
-               [letter
-                (* frequency string-length)])))
-
 (defn in [haystack needle]
   (some #(= % needle) haystack))
 

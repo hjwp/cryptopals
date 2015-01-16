@@ -46,12 +46,6 @@
                                 (int (* 1000 (standard-frequencies letter)))
                                 letter))])))
 
-(expect (* 10 (standard-frequencies \a))
-        ((expected-frequencies 10) \a))
-
-(expect (* 12 (standard-frequencies \b))
-        ((expected-frequencies 12) \b))
-
 
 (expect 99 (int (score almost-perfect-string)))
 
