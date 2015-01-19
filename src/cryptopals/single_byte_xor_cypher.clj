@@ -34,6 +34,7 @@
 
 (def letters (keys standard-frequencies))
 
+
 (defn map-over-hash [function hashmap]
   (into {} (for [[key, val] hashmap]
              [key (function val)])))
@@ -47,27 +48,56 @@
 (defmethod lowercase :string [string] (string/lower-case string))
 
 (defn count-letters [string]
-  (into {} (for [letter letters]
-             [letter
-              (if (in (lowercase string) letter)
-                (count (filter #(= letter (lowercase %)) string))
-                0)])))
+  (map-over-hash count (group-by identity string)))
 
 (defn letter-frequencies [string]
   (map-over-hash
-   (fn [letter-count] (/ (* 100 letter-count) (count string)))
+   (fn [letter-count] (* 100 (/ letter-count (count string))))
    (count-letters string)))
 
+(defn abs [integer]
+  (if (> integer 0) integer (- integer)))
+
+(count-letters "123")
+(letter-frequencies "1123")
+
+(defn fix-string [string]
+  (lowercase (reduce str (string/split string #" "))))
+
+(fix-string "Hello world")
+
+(defn nonletters [string]
+  (filter #(in letters %) string))
+
+(defn letter-frequency-variances [fixed-string]
+  (let
+    [actual-frequencies (letter-frequencies fixed-string)]
+    (for [letter (into #{} (concat letters fixed-string))]
+      (abs (-
+            (get standard-frequencies letter 0)
+            (get actual-frequencies letter 0))))))
+
+(letter-frequencies "this is a normal sentence")
+(letter-frequency-variances "thisisanormalsentence")
+(reduce + (letter-frequency-variances "thisisanormalsentence"))
+
 (defn score [string]
-  (let [actual-frequencies (letter-frequencies string)]
-    (- 100
-       (reduce +
-               (for [letter letters]
-                   (- (standard-frequencies letter) (actual-frequencies letter)))))))
+  (let [fixed-string (fix-string string)]
+    (reduce + (letter-frequency-variances fixed-string))))
+
+
+(score "aaa")
+(score "how do you do")
+(score "thisisanormalsentence")
+(score "this is a normal sentence")
+(score "This is a normal SENTENCE")
+(score "abcabcabc")
+(score "!@")
+(score "abcabcabc!@#$%^&*~~~~")
 
 
 (defn get-all-decrypts [secret]
-  (for [letter "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+  (for [letter "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz"]
     (let [decrypted (hex->string (hexor-single-byte secret letter))]
       {:score (score decrypted)
        :plaintext decrypted})))
@@ -75,7 +105,7 @@
 (get-all-decrypts "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
 
 
-(sort-by #(% :score) (get-all-decrypts "abc"))
+(sort-by #(% :score) (get-all-decrypts "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
 
 (defn most-likely-single-byte-xor-decrypt [secret]
-  (last (sort-by #(% :score) (get-all-decrypts secret))))
+  (first (sort-by #(% :score) (get-all-decrypts secret))))

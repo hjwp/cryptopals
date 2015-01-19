@@ -13,6 +13,6 @@
 encrypted-strings
 
 
-;; (def decrypts (map most-likely-single-byte-xor-decrypt encrypted-strings))
-;; decrypts
-;; (last (sort-by :score decrypts))
+(def decrypts (map most-likely-single-byte-xor-decrypt encrypted-strings))
+ decrypts
+(first (sort-by :score decrypts))
