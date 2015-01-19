@@ -13,6 +13,10 @@
 encrypted-strings
 
 
+
 (def decrypts (map most-likely-single-byte-xor-decrypt encrypted-strings))
- decrypts
-(first (sort-by :score decrypts))
+(def answer (first (sort-by :score decrypts)))
+answer
+(expect
+ "jumping"
+ (re-find  #"jumping" (answer :plaintext)))

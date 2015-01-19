@@ -39,7 +39,6 @@
   (into {} (for [[key, val] hashmap]
              [key (function val)])))
 
-
 (defn in [haystack needle]
   (some #(= % needle) haystack))
 
@@ -58,13 +57,8 @@
 (defn abs [integer]
   (if (> integer 0) integer (- integer)))
 
-(count-letters "123")
-(letter-frequencies "1123")
-
 (defn fix-string [string]
   (lowercase (reduce str (string/split string #" "))))
-
-(fix-string "Hello world")
 
 (defn nonletters [string]
   (filter #(in letters %) string))
@@ -77,35 +71,16 @@
             (get standard-frequencies letter 0)
             (get actual-frequencies letter 0))))))
 
-(letter-frequencies "this is a normal sentence")
-(letter-frequency-variances "thisisanormalsentence")
-(reduce + (letter-frequency-variances "thisisanormalsentence"))
-
 (defn score [string]
   (let [fixed-string (fix-string string)]
     (reduce + (letter-frequency-variances fixed-string))))
 
 
-(score "aaa")
-(score "how do you do")
-(score "thisisanormalsentence")
-(score "this is a normal sentence")
-(score "This is a normal SENTENCE")
-(score "abcabcabc")
-(score "!@")
-(score "abcabcabc!@#$%^&*~~~~")
-
-
 (defn get-all-decrypts [secret]
-  (for [letter "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz"]
-    (let [decrypted (hex->string (hexor-single-byte secret letter))]
+  (for [possible-byte (map char (range 128))]
+    (let [decrypted (hex->string (hexor-single-byte secret possible-byte))]
       {:score (score decrypted)
        :plaintext decrypted})))
-
-(get-all-decrypts "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
-
-
-(sort-by #(% :score) (get-all-decrypts "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
 
 (defn most-likely-single-byte-xor-decrypt [secret]
   (first (sort-by #(% :score) (get-all-decrypts secret))))

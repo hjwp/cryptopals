@@ -69,7 +69,6 @@
 (expect (score "abcdef") (score "a b c def"))
 
 (def secret "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
-(get-all-decrypts secret)
 (def answer (most-likely-single-byte-xor-decrypt secret))
 answer
 
