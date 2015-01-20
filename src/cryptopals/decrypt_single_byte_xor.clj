@@ -14,3 +14,5 @@
 
 (defn most-likely-single-byte-xor-decrypt [secret]
   (first (sort-by :score (get-all-decrypts secret))))
+
+

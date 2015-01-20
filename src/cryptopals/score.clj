@@ -34,7 +34,6 @@
 
 (def letters (keys standard-frequencies))
 
-
 (defn map-over-hash [function hashmap]
   (into {} (for [[key, val] hashmap]
              [key (function val)])))
@@ -59,9 +58,6 @@
 
 (defn fix-string [string]
   (lowercase (reduce str (string/split string #" "))))
-
-(defn nonletters [string]
-  (filter #(in letters %) string))
 
 (defn letter-frequency-variances [fixed-string]
   (let

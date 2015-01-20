@@ -27,7 +27,6 @@
           (int->bin (int (/ number 2)))
           [(mod number 2)])))
 
-
 (defn hexchar->bin [character]
   (int->bin (hexchar->int character)))
 
