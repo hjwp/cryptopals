@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]))
 
 (defn zero-pad [binary-digits desired-num]
-  (let [pad (- desired-num (mod (count binary-digits) desired-num))]
+  (let [pad (- desired-num (rem (count binary-digits) desired-num))]
     (if (= pad desired-num)
       binary-digits
       (concat (repeat pad 0) binary-digits))))
@@ -28,11 +28,11 @@
           [(mod number 2)])))
 
 (defn hexchar->bin [character]
-  (int->bin (hexchar->int character)))
+  (zero-pad (int->bin (hexchar->int character)) 4))
 
 (defn hex->bin [hex-string]
   (if (valid-hexstring? hex-string)
-    (reduce concat (map #(zero-pad % 4) (map hexchar->bin hex-string)))))
+    (reduce concat (map hexchar->bin hex-string))))
 
 
 (defn bin->int [binary-digits]
@@ -48,7 +48,6 @@
     (cond
      (< number 10) (char (+ zero-offset number))
      (< number 16) (char (+ a-offset (- number 10))))))
-
 
 (defn bin->hex [binary-digits]
   (string/join (map bin->hexchar (partition 4 (zero-pad binary-digits 4)))))

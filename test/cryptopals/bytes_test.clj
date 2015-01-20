@@ -26,11 +26,11 @@
 
 
 ;; hex->bin helper function to convert hex strings to binary
-(expect [0] (hexchar->bin \0))
-(expect [1] (hexchar->bin \1))
-(expect [1 0] (hexchar->bin \2))
-(expect [1 1] (hexchar->bin \3))
-(expect [1 0 0] (hexchar->bin \4))
+(expect [0 0 0 0] (hexchar->bin \0))
+(expect [0 0 0 1] (hexchar->bin \1))
+(expect [0 0 1 0] (hexchar->bin \2))
+(expect [0 0 1 1] (hexchar->bin \3))
+(expect [0 1 0 0] (hexchar->bin \4))
 (expect [1 0 0 0] (hexchar->bin \8))
 (expect [1 0 1 0] (hexchar->bin \a))
 (expect [1 1 1 1] (hexchar->bin \f))
