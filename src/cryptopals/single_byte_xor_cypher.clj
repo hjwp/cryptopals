@@ -80,7 +80,8 @@
   (for [possible-byte (map char (range 128))]
     (let [decrypted (hex->string (hexor-single-byte secret possible-byte))]
       {:score (score decrypted)
+       :byte possible-byte
        :plaintext decrypted})))
 
 (defn most-likely-single-byte-xor-decrypt [secret]
-  (first (sort-by #(% :score) (get-all-decrypts secret))))
+  (first (sort-by :score (get-all-decrypts secret))))
