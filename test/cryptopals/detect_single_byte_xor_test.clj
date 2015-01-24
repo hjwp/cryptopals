@@ -9,9 +9,6 @@
 
 (def encrypted-strings-file (slurp "resources/detect-single-byte-xor.txt"))
 (def encrypted-strings (string/split encrypted-strings-file #"\n"))
-encrypted-strings
-
-
 
 (def decrypts (map most-likely-single-byte-xor-decrypt encrypted-strings))
 
