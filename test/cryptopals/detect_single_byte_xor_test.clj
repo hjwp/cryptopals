@@ -12,6 +12,8 @@
 
 (def decrypts (map most-likely-single-byte-xor-decrypt encrypted-strings))
 
+;; (time (first (sort-by :score decrypts)))
+
 ;; (def answer (first (sort-by :score decrypts)))
 ;; answer
 ;; (expect

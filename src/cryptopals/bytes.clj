@@ -2,37 +2,6 @@
   (:require [clojure.string :as string]))
 
 
-(defn ziplists [list1 list2]
-  (map vector list1 list2))
-
-
-(defn zero-pad [binary-digits desired-num]
-  (let [pad (- desired-num (rem (count binary-digits) desired-num))]
-    (if (= pad desired-num)
-      binary-digits
-      (concat (repeat pad 0) binary-digits))))
-
-
-(defn valid-hexchar? [character]
-  (re-matches #"[\da-f]+" (str character)))
-
-(defn valid-hexstring? [string]
-  (every? valid-hexchar? string))
-
-
-(defn hexchar->int [character]
-  (if (valid-hexchar? character)
-    (read-string (str "0x" (str character)))))
-
-
-(defn int->bin [number]
-  (cond
-   (< number 2) [number]
-   :else (concat
-          (int->bin (int (/ number 2)))
-          [(mod number 2)])))
-
-
 (def hexchar->bin
   {
    \0 [0 0 0 0]
@@ -51,6 +20,45 @@
    \d [1 1 0 1]
    \e [1 1 1 0]
    \f [1 1 1 1]})
+
+(def hexchar->int
+  {
+   \0 0, \1 1, \2 2, \3 3, \4 4, \5 5, \6 6, \7 7, \8, 8, \9 9,
+   \a 10, \b 11, \c 12, \d 13, \e 14, \f 15})
+
+(defn ziplists [list1 list2]
+  (map vector list1 list2))
+
+
+(defn zero-pad [binary-digits desired-num]
+  (let [pad (- desired-num (rem (count binary-digits) desired-num))]
+    (if (= pad desired-num)
+      binary-digits
+      (concat (repeat pad 0) binary-digits))))
+
+
+(defn valid-hexchar? [character]
+  (hexchar->bin character))
+
+(defn valid-hexstring? [string]
+  (every? valid-hexchar? string))
+
+
+(defn hexchars->int [hexchars]
+  (when (valid-hexstring? hexchars)
+    (if (= 1 (count hexchars))
+      (hexchar->int (last hexchars))
+      (+
+       (* 16 (hexchar->int (first hexchars)))
+       (hexchar->int (last hexchars))))))
+
+
+(defn int->bin [number]
+  (cond
+   (< number 2) [number]
+   :else (concat
+          (int->bin (int (/ number 2)))
+          [(mod number 2)])))
 
 
 (defn hex->bin [hex-string]
@@ -87,14 +95,14 @@
   (bin->hex (int->bin number)))
 
 
-(defn hex->char [hex-digit]
-  (char (hexchar->int hex-digit)))
+(defn hexchars->char [hex-digit]
+  (char (hexchars->int hex-digit)))
 
 (defn hexstring->hexchars [hex-string]
   (map string/join (partition 2 hex-string)))
 
 (defn hex->string [hex-string]
-  (string/join (map hex->char (hexstring->hexchars hex-string))))
+  (string/join (map hexchars->char (hexstring->hexchars hex-string))))
 
 
 (defn char->hex [character]

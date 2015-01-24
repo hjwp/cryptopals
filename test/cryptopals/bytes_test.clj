@@ -4,11 +4,13 @@
 
 
 ;; hexchar->int helper function to convert hex characters to integers
-(expect 1 (hexchar->int \1))
-(expect 2 (hexchar->int \2))
-(expect 10 (hexchar->int \a))
-(expect 15 (hexchar->int \f))
-(expect nil (hexchar->int \g))
+(expect 1 (hexchars->int "1"))
+(expect 2 (hexchars->int "2"))
+(expect 10 (hexchars->int "a"))
+(expect 15 (hexchars->int "f"))
+(expect nil (hexchars->int "g"))
+(expect 16 (hexchars->int "10"))
+(expect 255 (hexchars->int "ff"))
 
 
 (expect [0 0 1] (zero-pad [1] 3))
@@ -68,8 +70,8 @@
 (expect "a" (int->hex 10))
 
 ; hex to and from ascii strings/characters
-(expect \a (hex->char "61"))
-(expect \z (hex->char "7a"))
+(expect \a (hexchars->char "61"))
+(expect \z (hexchars->char "7a"))
 (expect "farts" (hex->string "6661727473"))
 
 (expect "63" (char->hex \c))
