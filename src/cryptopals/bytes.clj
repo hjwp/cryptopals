@@ -28,7 +28,7 @@
   (into {} (for [[key val] hexchar->bin] [val key])))
 
 
-(defn zero-pad [binary-digits desired-num]
+(defn zero-pad [desired-num binary-digits]
   (let [pad (- desired-num (rem (count binary-digits) desired-num))]
     (if (= pad desired-num)
       binary-digits
@@ -40,7 +40,6 @@
 
 (defn valid-hexstring? [string]
   (every? valid-hexchar? string))
-
 
 (defn hexchars->int [hexchars]
   (when (valid-hexstring? hexchars)
@@ -75,14 +74,12 @@
       (+ (* first-digit (two-to-the-n (count remainder)))
        (bin->int remainder)))))
 
-
-(def A-offset (int \A))
-(def a-offset (int \a))
-(def zero-offset (int \0))
-
+(reverse (map reverse (partition 4 4 (repeat 0) (reverse [1 2 3 4 5 6]))))
 
 (defn bin->hex [binary-digits]
-  (string/join (map bin->hexchar (partition 4 (zero-pad binary-digits 4)))))
+  (let [grouped-bits (partition 4 (zero-pad 4 binary-digits))]
+    (string/join (map bin->hexchar grouped-bits))))
+
 
 (defn int->hex [number]
   (bin->hex (int->bin number)))

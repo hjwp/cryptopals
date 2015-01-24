@@ -13,11 +13,11 @@
 (expect 255 (hexchars->int "ff"))
 
 
-(expect [0 0 1] (zero-pad [1] 3))
-(expect [0 0 1] (zero-pad [0 0 1] 3))
-(expect [1 0 1] (zero-pad [1 0 1] 3))
-(expect [0 0 0 0 0 1] (zero-pad [1] 6))
-(expect [0 0 0 0 0 1 0 1 0 1 0 1] (zero-pad [1 0 1 0 1 0 1] 6))
+(expect [0 0 1] (zero-pad 3 [1]))
+(expect [0 0 1] (zero-pad 3 [0 0 1]))
+(expect [1 0 1] (zero-pad 3 [1 0 1]))
+(expect [0 0 0 0 0 1] (zero-pad 6 [1]))
+(expect [0 0 0 0 0 1 0 1 0 1 0 1] (zero-pad 6 [1 0 1 0 1 0 1]))
 
 ; int->bin converts ints to binary representation
 (expect [0] (int->bin 0))
