@@ -32,12 +32,31 @@
           (int->bin (int (/ number 2)))
           [(mod number 2)])))
 
-(defn hexchar->bin [character]
-  (zero-pad (int->bin (hexchar->int character)) 4))
+
+(def hexchar->bin
+  {
+   \0 [0 0 0 0]
+   \1 [0 0 0 1]
+   \2 [0 0 1 0]
+   \3 [0 0 1 1]
+   \4 [0 1 0 0]
+   \5 [0 1 0 1]
+   \6 [0 1 1 0]
+   \7 [0 1 1 1]
+   \8 [1 0 0 0]
+   \9 [1 0 0 1]
+   \a [1 0 1 0]
+   \b [1 0 1 1]
+   \c [1 1 0 0]
+   \d [1 1 0 1]
+   \e [1 1 1 0]
+   \f [1 1 1 1]})
+
 
 (defn hex->bin [hex-string]
   (if (valid-hexstring? hex-string)
     (reduce concat (map hexchar->bin hex-string))))
+
 
 (defn two-to-the-n [n]
   (reduce * (repeat n 2N)))
@@ -50,12 +69,6 @@
       (+ (* first-digit (two-to-the-n (count remainder)))
        (bin->int remainder)))))
 
-(two-to-the-n 400)
-;;   (reduce
-;;    +
-;;    (map
-;;     #(* %1 (two-to-the-n %2))
-;;     (ziplists binary-digits (range (count binary-digits))))))
 
 (def A-offset (int \A))
 (def a-offset (int \a))
