@@ -26,9 +26,6 @@
    \0 0, \1 1, \2 2, \3 3, \4 4, \5 5, \6 6, \7 7, \8, 8, \9 9,
    \a 10, \b 11, \c 12, \d 13, \e 14, \f 15})
 
-(defn ziplists [list1 list2]
-  (map vector list1 list2))
-
 
 (defn zero-pad [binary-digits desired-num]
   (let [pad (- desired-num (rem (count binary-digits) desired-num))]
