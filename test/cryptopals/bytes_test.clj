@@ -3,7 +3,7 @@
             [cryptopals.bytes :refer :all]))
 
 
-;; hexchar->int helper function to convert hex characters to integers
+;; hexchars->int helper function to convert two-digit hex bytes to integers
 (expect 1 (hexchars->int "1"))
 (expect 2 (hexchars->int "2"))
 (expect 10 (hexchars->int "a"))
@@ -55,9 +55,9 @@
 (expect 3 (bin->int [1 1]))
 
 ;; convert binary sequence back to hex
-(expect \0 (bin->hexchar [0]))
-(expect \1 (bin->hexchar [1]))
-(expect \2 (bin->hexchar [1 0]))
+(expect \0 (bin->hexchar [0 0 0 0]))
+(expect \1 (bin->hexchar [0 0 0 1]))
+(expect \2 (bin->hexchar [0 0 1 0]))
 (expect \a (bin->hexchar [1 0 1 0]))
 (expect \f (bin->hexchar [1 1 1 1]))
 

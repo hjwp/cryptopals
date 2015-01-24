@@ -22,9 +22,10 @@
    \f [1 1 1 1]})
 
 (def hexchar->int
-  {
-   \0 0, \1 1, \2 2, \3 3, \4 4, \5 5, \6 6, \7 7, \8, 8, \9 9,
-   \a 10, \b 11, \c 12, \d 13, \e 14, \f 15})
+  (into {} (map hash-map "0123456789abcdef" (range 0 16))))
+
+(def bin->hexchar
+  (into {} (for [[key val] hexchar->bin] [val key])))
 
 
 (defn zero-pad [binary-digits desired-num]
@@ -79,11 +80,6 @@
 (def a-offset (int \a))
 (def zero-offset (int \0))
 
-(defn bin->hexchar [binary-digits]
-  (let [number (bin->int binary-digits)]
-    (cond
-     (< number 10) (char (+ zero-offset number))
-     (< number 16) (char (+ a-offset (- number 10))))))
 
 (defn bin->hex [binary-digits]
   (string/join (map bin->hexchar (partition 4 (zero-pad binary-digits 4)))))
