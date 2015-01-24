@@ -1,6 +1,11 @@
 (ns cryptopals.bytes
   (:require [clojure.string :as string]))
 
+
+(defn ziplists [list1 list2]
+  (map vector list1 list2))
+
+
 (defn zero-pad [binary-digits desired-num]
   (let [pad (- desired-num (rem (count binary-digits) desired-num))]
     (if (= pad desired-num)
@@ -34,10 +39,23 @@
   (if (valid-hexstring? hex-string)
     (reduce concat (map hexchar->bin hex-string))))
 
+(defn two-to-the-n [n]
+  (reduce * (repeat n 2N)))
+
 
 (defn bin->int [binary-digits]
-  (read-string (str "2r" (string/join binary-digits))))
+  (let [first-digit (first binary-digits)
+        remainder (rest binary-digits)]
+    (if (empty? binary-digits) 0
+      (+ (* first-digit (two-to-the-n (count remainder)))
+       (bin->int remainder)))))
 
+(two-to-the-n 400)
+;;   (reduce
+;;    +
+;;    (map
+;;     #(* %1 (two-to-the-n %2))
+;;     (ziplists binary-digits (range (count binary-digits))))))
 
 (def A-offset (int \A))
 (def a-offset (int \a))
