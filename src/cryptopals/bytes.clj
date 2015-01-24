@@ -27,6 +27,9 @@
 (def bin->hexchar
   (into {} (for [[key val] hexchar->bin] [val key])))
 
+(def int->hexchar
+  (into {} (for [[key val] hexchar->int] [val key])))
+
 
 (defn zero-pad [desired-num binary-digits]
   (let [pad (- desired-num (rem (count binary-digits) desired-num))]
@@ -65,6 +68,8 @@
 
 (defn two-to-the-n [n]
   (reduce * (repeat n 2N)))
+(defn sixteen-to-the-n [n]
+  (reduce * (repeat n 16N)))
 
 
 (defn bin->int [binary-digits]
@@ -74,15 +79,19 @@
       (+ (* first-digit (two-to-the-n (count remainder)))
        (bin->int remainder)))))
 
-(reverse (map reverse (partition 4 4 (repeat 0) (reverse [1 2 3 4 5 6]))))
 
 (defn bin->hex [binary-digits]
   (let [grouped-bits (partition 4 (zero-pad 4 binary-digits))]
+;;  (let [grouped-bits (reverse (map reverse (partition 4 4 (repeat 0) (reverse binary-digits))))]
     (string/join (map bin->hexchar grouped-bits))))
 
 
 (defn int->hex [number]
-  (bin->hex (int->bin number)))
+  (if (< number 16)
+    (str (int->hexchar number))
+    (str
+       (int->hex (bigint (/ number 16N)))
+       (int->hexchar (rem number 16)))))
 
 
 (defn hexchars->char [hex-digit]
