@@ -10,7 +10,7 @@
 (def encrypted-strings-file (slurp "resources/detect-single-byte-xor.txt"))
 (def encrypted-strings (string/split encrypted-strings-file #"\n"))
 
-(def decrypts (map most-likely-single-byte-xor-decrypt encrypted-strings))
+(def decrypts (pmap most-likely-single-byte-xor-decrypt encrypted-strings))
 
 (def answer (time (first (sort-by :score decrypts))))
 
