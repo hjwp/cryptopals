@@ -38,19 +38,12 @@
       (concat (repeat pad 0) binary-digits))))
 
 
-(defn valid-hexchar? [character]
-  (hexchar->bin character))
-
-(defn valid-hexstring? [string]
-  (every? valid-hexchar? string))
-
 (defn hexchars->int [hexchars]
-  (when (valid-hexstring? hexchars)
-    (if (= 1 (count hexchars))
-      (hexchar->int (last hexchars))
-      (+
-       (* 16 (hexchar->int (first hexchars)))
-       (hexchar->int (last hexchars))))))
+  (if (= 1 (count hexchars))
+    (hexchar->int (last hexchars))
+    (+
+     (* 16 (hexchar->int (first hexchars)))
+     (hexchar->int (last hexchars)))))
 
 
 (defn int->bin [number]
@@ -62,8 +55,7 @@
 
 
 (defn hex->bin [hex-string]
-  (if (valid-hexstring? hex-string)
-    (reduce concat (map hexchar->bin hex-string))))
+  (reduce concat (map hexchar->bin hex-string)))
 
 
 (defn two-to-the-n [n]
@@ -105,7 +97,7 @@
 
 
 (defn char->hex [character]
-  (string/join (bin->hex (int->bin (int character)))))
+  (string/join (int->hex (int character))))
 
 (defn string->hex [string]
   (string/join (map char->hex string)))
