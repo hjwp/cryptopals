@@ -70,3 +70,6 @@
 (defn score [string]
   (let [fixed-string (fix-string string)]
     (reduce + (letter-frequency-variances fixed-string))))
+
+
+;; (time (dotimes [_ 100000] (score "abcdefghijklmnopqrstuvwxyz")))
