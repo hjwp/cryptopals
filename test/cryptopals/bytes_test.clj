@@ -67,14 +67,19 @@
 (expect "3" (bin->hex [1 1]))
 (expect "10" (bin->hex [0 0 0 1 0 0 0 0]))
 
-(expect "a" (int->hex 10))
+(expect "0a" (int->hex 10))
+(expect "0b" (int->hex 11))
+(expect "01" (int->hex 1))
+(expect "10" (int->hex 16))
 
 ; hex to and from ascii strings/characters
 (expect \a (hexchars->char "61"))
 (expect \z (hexchars->char "7a"))
 (expect "farts" (hex->string "6661727473"))
 
+
 (expect "63" (char->hex \c))
 (expect "77" (char->hex \w))
 (expect "6377" (string->hex "cw"))
 (expect "706c696e7468" (string->hex "plinth"))
+

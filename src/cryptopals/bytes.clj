@@ -77,13 +77,19 @@
 ;;  (let [grouped-bits (reverse (map reverse (partition 4 4 (repeat 0) (reverse binary-digits))))]
     (string/join (map bin->hexchar grouped-bits))))
 
-
-(defn int->hex [number]
+(defn- int->hexrep [number]
   (if (< number 16)
     (str (int->hexchar number))
     (str
-       (int->hex (bigint (/ number 16N)))
-       (int->hexchar (rem number 16)))))
+     (int->hexrep (bigint (/ number 16N)))
+     (int->hexchar (rem number 16)))))
+
+(defn- singlechar? [string]
+  (boolean (= 1 (count (take 2 string)))))
+
+(defn int->hex [number]
+  (let [hexrep (int->hexrep number)]
+    (if (singlechar? hexrep) (str "0" hexrep) hexrep)))
 
 
 (defn hexchars->char [hex-digit]
