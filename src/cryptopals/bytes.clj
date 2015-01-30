@@ -74,7 +74,6 @@
 
 (defn bin->hex [binary-digits]
   (let [grouped-bits (partition 4 (zero-pad 4 binary-digits))]
-;;  (let [grouped-bits (reverse (map reverse (partition 4 4 (repeat 0) (reverse binary-digits))))]
     (string/join (map bin->hexchar grouped-bits))))
 
 (defn- int->hexrep [number]
@@ -107,3 +106,11 @@
 
 (defn string->hex [string]
   (string/join (map char->hex string)))
+
+(defn abs [integer]
+  (if (> integer 0) integer (- integer)))
+
+(defn hamming [from to]
+  (reduce + (map bit-xor
+                 (hex->bin (string->hex from))
+                 (hex->bin (string->hex to)))))

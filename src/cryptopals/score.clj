@@ -53,9 +53,6 @@
    (fn [letter-count] (* 100 (/ letter-count (count string))))
    (count-letters string)))
 
-(defn abs [integer]
-  (if (> integer 0) integer (- integer)))
-
 (defn fix-string [string]
   (lowercase (reduce str (string/split string #" "))))
 
