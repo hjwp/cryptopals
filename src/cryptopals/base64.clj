@@ -3,20 +3,38 @@
    [clojure.string :as string]
    [cryptopals.bytes :refer :all]))
 
-(def A-offset (int \A))
-(def a-offset (int \a))
-(def zero-offset (int \0))
+(def int->base64char
+  (into {} (concat
+            (map hash-map (range 0 26)  "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+            (map hash-map (range 26 52) "abcdefghijklmnopqrstuvwxyz")
+            (map hash-map (range 52 62) "0123456789")
+            {62 \+, 63 \/})))
 
 
-(defn base64char [number]
-  (cond
-   (< number 26) (char (+ A-offset number))
-   (< number 52) (char (+ a-offset (- number 26)))
-   (< number 62) (char (+ zero-offset (- number 52)))
-   (= number 62) \+
-   (= number 63) \/))
+(def base64char->int
+  (into {} (for [[key val] int->base64char] [val key])))
 
 
+(defn base64->hexstring [b64string]
+  (->>
+   b64string
+   (map base64char->int)
+   (map int->bin)
+   (map #(zero-pad 6 %))
+   flatten
+   (zero-pad 4)
+   (partition 4)
+   (map bin->hex)
+   string/join))
 
-(defn base64 [hex-string]
-  (string/join (map base64char (map bin->int (partition 6 (zero-pad 6 (hex->bin hex-string)))))))
+
+(defn hexstring->base64 [hex-string]
+  (->>
+   hex-string
+   hex->bin
+   (zero-pad 6)
+   (partition 6)
+   (map bin->int)
+   (map int->base64char)
+   string/join))
+

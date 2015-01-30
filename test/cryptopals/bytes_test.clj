@@ -84,11 +84,3 @@
 (expect "706c696e7468" (string->hex "plinth"))
 
 (expect 37 (hamming "this is a test" "wokka wokka!!!"))
-
-(map int "this is a test")
-(map int "wokka wokka!!!")
-
-(reduce + (map bit-xor
-     (hex->bin (string->hex "this is a test"))
-     (hex->bin (string->hex "wokka wokka!!!"))))
-
