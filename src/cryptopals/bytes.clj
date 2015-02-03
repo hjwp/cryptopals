@@ -110,7 +110,7 @@
 (defn abs [integer]
   (if (> integer 0) integer (- integer)))
 
-(defn hamming [from to]
+(defn hamming [fromhex tohex]
   (reduce + (map bit-xor
-                 (hex->bin (string->hex from))
-                 (hex->bin (string->hex to)))))
+                 (hex->bin fromhex)
+                 (hex->bin tohex))))
