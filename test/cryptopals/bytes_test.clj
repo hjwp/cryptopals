@@ -83,6 +83,6 @@
 (expect "6377" (string->hex "cw"))
 (expect "706c696e7468" (string->hex "plinth"))
 
-(expect 37 (hamming
-            (string->hex "this is a test")
-            (string->hex "wokka wokka!!!")))
+(expect 37 (hamming "this is a test" "wokka wokka!!!"))
+(expect 0 (hamming [0 1 0 1] [0 1 0 1]))
+(expect 1 (hamming [0 0 1] [0 0 0]))
