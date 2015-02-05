@@ -18,7 +18,17 @@
 (def answer (most-likely-single-byte-xor-decrypt secret))
 
 (expect #(< % 100) (answer :score))
+answer
 
 (expect
  "bacon"
  (re-find  #"bacon" (answer :plaintext)))
+
+
+(expect "secret message"
+        (:plaintext (most-likely-single-byte-xor-decrypt
+                     (hexor-single-byte \x (string->hex "secret message")))))
+
+(expect \y
+        (:byte (most-likely-single-byte-xor-decrypt
+                     (hexor-single-byte \y (string->hex "secret message")))))

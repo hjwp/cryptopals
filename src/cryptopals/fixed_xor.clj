@@ -12,7 +12,7 @@
              (hexstring->byteseq string2)))))
 
 
-(defn hexor-single-byte [hexstring character]
+(defn hexor-single-byte [character hexstring]
   (string/join
    (map int->hexbyte
     (map bit-xor
