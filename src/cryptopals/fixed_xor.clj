@@ -8,13 +8,13 @@
   (string/join
    (map int->hexbyte
         (map bit-xor
-             (hexstring->byteseq string1)
-             (hexstring->byteseq string2)))))
+             (tobytes string1)
+             (tobytes string2)))))
 
 
 (defn hexor-single-byte [character hexstring]
   (string/join
    (map int->hexbyte
     (map bit-xor
-      (hexstring->byteseq hexstring)
+      (tobytes hexstring)
       (repeat (int character))))))
