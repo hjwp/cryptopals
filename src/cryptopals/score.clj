@@ -45,6 +45,9 @@
 (defmethod lowercase :char [character] (first (string/lower-case character)))
 (defmethod lowercase :string [string] (string/lower-case string))
 
+(defn abs [integer]
+  (if (> integer 0) integer (- integer)))
+
 (defn count-letters [string]
   (map-over-hash count (group-by identity string)))
 

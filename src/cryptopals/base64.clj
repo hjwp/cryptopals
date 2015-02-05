@@ -20,10 +20,10 @@
    b64string
    (map base64char->int)
    (map int->bin)
-   (map #(zero-pad 6 %))
+   (map #(take-last 6 %))
    flatten
-   (zero-pad 4)
-   (partition 4)
+   (zero-pad 8)
+   (partition 8)
    (map bin->hex)
    string/join))
 
@@ -37,4 +37,3 @@
    (map bin->int)
    (map int->base64char)
    string/join))
-

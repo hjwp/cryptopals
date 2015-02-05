@@ -4,13 +4,14 @@
 
 
 ;; hexchars->int helper function to convert two-digit hex bytes to integers
-(expect 1 (hexchars->int "1"))
-(expect 2 (hexchars->int "2"))
-(expect 10 (hexchars->int "a"))
-(expect 15 (hexchars->int "f"))
-(expect nil (hexchars->int "g"))
-(expect 16 (hexchars->int "10"))
-(expect 255 (hexchars->int "ff"))
+(expect 1  (hexbyte->int "01"))
+(expect 2  (hexbyte->int "02"))
+(expect 10 (hexbyte->int "0a"))
+(expect 15 (hexbyte->int "0f"))
+(expect nil (hexbyte->int "g"))
+(expect nil (hexbyte->int "0g"))
+(expect 16  (hexbyte->int "10"))
+(expect 255 (hexbyte->int "ff"))
 
 
 (expect [0 0 1] (zero-pad 3 [1]))
@@ -20,33 +21,34 @@
 (expect [0 0 0 0 0 1 0 1 0 1 0 1] (zero-pad 6 [1 0 1 0 1 0 1]))
 
 ; int->bin converts ints to binary representation
-(expect [0] (int->bin 0))
-(expect [1] (int->bin 1))
-(expect [1 0] (int->bin 2))
-(expect [1 0 0 0] (int->bin 8))
-(expect [1 0 0 0 0 0 1] (int->bin 65))
+(expect [0 0 0 0 0 0 0 0] (int->bin 0))
+(expect [0 0 0 0 0 0 0 1] (int->bin 1))
+(expect [0 0 0 0 0 0 1 0] (int->bin 2))
+(expect [0 0 0 0 1 0 0 0] (int->bin 8))
+(expect [0 1 0 0 0 0 0 1] (int->bin 65))
 
 
 ;; hex->bin helper function to convert hex strings to binary
-(expect [0 0 0 0] (hexchar->bin \0))
-(expect [0 0 0 1] (hexchar->bin \1))
-(expect [0 0 1 0] (hexchar->bin \2))
-(expect [0 0 1 1] (hexchar->bin \3))
-(expect [0 1 0 0] (hexchar->bin \4))
-(expect [1 0 0 0] (hexchar->bin \8))
-(expect [1 0 1 0] (hexchar->bin \a))
-(expect [1 1 1 1] (hexchar->bin \f))
+(expect [0 0 0 0 0 0 0 0] (hexbyte->bin "00"))
+(expect [0 0 0 0 0 0 0 1] (hexbyte->bin "01"))
+(expect [0 0 0 0 0 0 1 0] (hexbyte->bin "02"))
+(expect [0 0 0 0 0 0 1 1] (hexbyte->bin "03"))
+(expect [0 0 0 0 0 1 0 0] (hexbyte->bin "04"))
+(expect [0 0 0 0 1 0 0 0] (hexbyte->bin "08"))
+(expect [0 0 0 0 1 0 1 0] (hexbyte->bin "0a"))
+(expect [0 0 0 1 0 0 0 0] (hexbyte->bin "10"))
+(expect [0 0 0 1 1 1 1 1] (hexbyte->bin "1f"))
 
-(expect [0 0 0 0] (hex->bin "0"))
-(expect [0 0 0 1] (hex->bin "1"))
-(expect [0 0 1 0] (hex->bin "2"))
-(expect [0 0 1 1] (hex->bin "3"))
-(expect [0 1 0 0] (hex->bin "4"))
-(expect [1 0 0 0] (hex->bin "8"))
-(expect [1 0 1 0] (hex->bin "a"))
+(expect [0 0 0 0 0 0 0 0] (hex->bin "00"))
+(expect [0 0 0 0 0 0 0 1] (hex->bin "01"))
+(expect [0 0 0 0 0 0 1 0] (hex->bin "02"))
+(expect [0 0 0 0 0 0 1 1] (hex->bin "03"))
+(expect [0 0 0 0 0 1 0 0] (hex->bin "04"))
+(expect [0 0 0 0 1 0 0 0] (hex->bin "08"))
+(expect [0 0 0 0 1 0 1 0] (hex->bin "0a"))
 (expect [0 0 0 1 0 0 0 0] (hex->bin "10"))
 (expect [0 0 0 1 1 1 1 1] (hex->bin "1f"))
-(expect nil (hex->bin "z"))
+(expect [] (hex->bin "z"))
 
 ;; convert binary sequence back to ints
 (expect 0 (bin->int [0]))
@@ -54,32 +56,16 @@
 (expect 2 (bin->int [1 0]))
 (expect 3 (bin->int [1 1]))
 
-;; convert binary sequence back to hex
-(expect \0 (bin->hexchar [0 0 0 0]))
-(expect \1 (bin->hexchar [0 0 0 1]))
-(expect \2 (bin->hexchar [0 0 1 0]))
-(expect \a (bin->hexchar [1 0 1 0]))
-(expect \f (bin->hexchar [1 1 1 1]))
-
-(expect "0" (bin->hex [0]))
-(expect "1" (bin->hex [1]))
-(expect "2" (bin->hex [1 0]))
-(expect "3" (bin->hex [1 1]))
+(expect "00" (bin->hex [0 0 0 0 0 0 0 0]))
+(expect "01" (bin->hex [0 0 0 0 0 0 0 1]))
+(expect "02" (bin->hex [0 0 0 0 0 0 1 0]))
+(expect "03" (bin->hex [0 0 0 0 0 0 1 1]))
 (expect "10" (bin->hex [0 0 0 1 0 0 0 0]))
 
-(expect "0a" (int->hex 10))
-(expect "0b" (int->hex 11))
-(expect "01" (int->hex 1))
-(expect "10" (int->hex 16))
 
 ; hex to and from ascii strings/characters
-(expect \a (hexchars->char "61"))
-(expect \z (hexchars->char "7a"))
 (expect "farts" (hex->string "6661727473"))
-
-
-(expect "63" (char->hex \c))
-(expect "77" (char->hex \w))
+(expect "63" (string->hex "c"))
 (expect "6377" (string->hex "cw"))
 (expect "706c696e7468" (string->hex "plinth"))
 

@@ -2,12 +2,13 @@
   (:require
    [clojure.string :as string]
    [cryptopals.fixed-xor :refer :all]
+   [cryptopals.decrypt-single-byte-xor :refer [most-likely-single-byte-xor-decrypt]]
   [cryptopals.bytes :refer :all]))
 
 
 (defn repeating-key-xor [k plaintext]
   (string/join
-   (map int->hex
+   (map int->hexbyte
         (map bit-xor
              (map int plaintext)
              (map int (flatten (repeat (vec k))))))))
@@ -32,3 +33,37 @@
     (take 3 (reverse (sort-by
                       #(keysize-score % cyphertext)
                       possible-keysizes)))))
+
+(defn transposed-chars [keysize cyphertext]
+  (for [pos (range keysize)]
+    (take-nth keysize (nthrest cyphertext pos))))
+
+(defn untranspose [matrix]
+  (flatten (apply map list matrix)))
+
+(string->hex "abc")
+(repeating-key-xor "abcd" "this is the secret text")
+
+(let [cyphertext (repeating-key-xor "abcd" "this is the secret text")
+      keysize 4]
+  (->>
+   cyphertext
+   (transposed-chars keysize)
+   (map string/join)
+   (map most-likely-single-byte-xor-decrypt)
+;;    (map :plaintext)
+;;    untranspose
+
+   ))
+;;
+
+
+(defn decrypt-repeating-key-xor [cyphertext]
+  (for [keysize (probable-keysizes cyphertext)]
+    (->>
+     cyphertext
+     (transposed-chars keysize)
+     (map most-likely-single-byte-xor-decrypt)
+     (map :plaintext)
+     untranspose
+     )))

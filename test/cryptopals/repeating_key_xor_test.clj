@@ -37,15 +37,25 @@
 ;;     For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes, and find the edit distance between them. Normalize this result by dividing by KEYSIZE.
 ;;     The KEYSIZE with the smallest normalized edit distance is probably the key. You could proceed perhaps with the smallest 2-3 KEYSIZE values. Or take 4 KEYSIZE blocks instead of 2 and average the distances.
 
-(expect (some #(= 2 %)
-              (probable-keysizes (repeating-key-xor "ab" "this is a test"))))
-(expect (some #(= 3 %)
-              (probable-keysizes (repeating-key-xor "abc" "this is a shmest"))))
-(expect (some #(= 6 %)
-              (probable-keysizes (repeating-key-xor "abcdef" "This is a test too, a much longer one, with a larger key size"))))
+(expect 2 (in (probable-keysizes (repeating-key-xor "ab" "this is a test"))))
+
+(expect 3 (in (probable-keysizes (repeating-key-xor "abc" "this is a shmest"))))
+
+(expect 6 (in (probable-keysizes (repeating-key-xor "abcdef" "This is a test too, a much longer one, with a larger key size"))))
 
 ;;     Now that you probably know the KEYSIZE: break the ciphertext into blocks of KEYSIZE length.
 ;;     Now transpose the blocks: make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.
 ;;     Solve each block as if it was single-character XOR. You already have code to do this.
 ;;     For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
 
+(expect
+ "this is the secret text"
+ (decrypt-repeating-key-xor (repeating-key-xor "ab" "this is the secret text")))
+
+;; (expect
+;;  "this is the secret text"
+;;  (decrypt-repeating-key-xor (repeating-key-xor "abc" "this is the secret text")))
+
+;;  (expect
+;;  "this is the secret message I have encoded"
+;;  (decrypt-repeating-key-xor (repeating-key-xor "iceicebaby" "this is the secret message I have encoded" )))

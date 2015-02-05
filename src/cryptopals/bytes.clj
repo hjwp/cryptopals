@@ -30,6 +30,21 @@
 (def int->hexchar
   (into {} (for [[key val] hexchar->int] [val key])))
 
+(def allhexbytes
+  (for [first-digit "0123456789abcdef" second-digit "0123456789abcdef"] (str first-digit second-digit)))
+
+(def int->hexbyte
+  (into {} (map hash-map (range 256) allhexbytes)))
+
+(def hexbyte->int
+  (into {} (map hash-map allhexbytes (range 256))))
+
+(defn hexstring->hexbytes [hexstring]
+  (map string/join (partition 2 hexstring)))
+
+(defn hexstring->byteseq [hexstring]
+  (map hexbyte->int (hexstring->hexbytes hexstring)))
+
 
 (defn zero-pad [desired-num binary-digits]
   (let [pad (- desired-num (rem (count binary-digits) desired-num))]
@@ -37,25 +52,35 @@
       binary-digits
       (concat (repeat pad 0) binary-digits))))
 
-
-(defn hexchars->int [hexchars]
-  (if (= 1 (count hexchars))
-    (hexchar->int (last hexchars))
-    (+
-     (* 16 (hexchar->int (first hexchars)))
-     (hexchar->int (last hexchars)))))
-
+(defn- int->bin-recursive [number]
+   (cond
+     (< number 2) [number]
+    :else (concat
+           (int->bin-recursive (int (/ number 2)))
+           [(mod number 2)])))
 
 (defn int->bin [number]
-  (cond
-   (< number 2) [number]
-   :else (concat
-          (int->bin (int (/ number 2)))
-          [(mod number 2)])))
+  (zero-pad 8 (int->bin-recursive number)))
+
+
+(def hexbyte->bin
+  (into {} (for [hexbyte allhexbytes] {hexbyte (int->bin (hexbyte->int hexbyte))})))
+
+(def bin->hexbyte
+  (into {} (for [[hexbyte bits] hexbyte->bin] [bits hexbyte])))
 
 
 (defn hex->bin [hex-string]
-  (reduce concat (map hexchar->bin hex-string)))
+  (flatten (map hexbyte->bin (hexstring->hexbytes hex-string))))
+
+(defn hex->string [hexstring]
+  (string/join (map char (hexstring->byteseq hexstring))))
+
+
+(defn bin->hex [binary-digits]
+  (let [grouped-bits (partition 8 (zero-pad 8 binary-digits))]
+    (string/join (map bin->hexbyte grouped-bits))))
+
 
 
 (defn two-to-the-n [n]
@@ -72,43 +97,12 @@
        (bin->int remainder)))))
 
 
-(defn bin->hex [binary-digits]
-  (let [grouped-bits (partition 4 (zero-pad 4 binary-digits))]
-    (string/join (map bin->hexchar grouped-bits))))
-
-(defn- int->hexrep [number]
-  (if (< number 16)
-    (str (int->hexchar number))
-    (str
-     (int->hexrep (bigint (/ number 16N)))
-     (int->hexchar (rem number 16)))))
-
-(defn- singlechar? [string]
-  (boolean (= 1 (count (take 2 string)))))
-
-(defn int->hex [number]
-  (let [hexrep (int->hexrep number)]
-    (if (singlechar? hexrep) (str "0" hexrep) hexrep)))
-
-
-(defn hexchars->char [hex-digit]
-  (char (hexchars->int hex-digit)))
-
 (defn hexstring->hexchars [hex-string]
   (map string/join (partition 2 hex-string)))
 
-(defn hex->string [hex-string]
-  (string/join (map hexchars->char (hexstring->hexchars hex-string))))
-
-
-(defn char->hex [character]
-  (string/join (int->hex (int character))))
-
 (defn string->hex [string]
-  (string/join (map char->hex string)))
+  (string/join (map int->hexbyte (map int string))))
 
-(defn abs [integer]
-  (if (> integer 0) integer (- integer)))
 
 (defmulti hamming
   (fn [bytes-or-string1 bytes-or-string2]
