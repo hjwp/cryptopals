@@ -6,12 +6,12 @@
    [cryptopals.score :refer :all]))
 
 
-(defn get-all-decrypts [secret]
-  (for [possible-byte (map char (range 256))]
-    (let [decrypted (tostring (hexor-single-byte possible-byte secret))]
-      {:cypherbytes secret,
+(defn get-all-decrypts [cyphertext]
+  (for [possible-char (map char (range 256))]
+    (let [decrypted (bytes->string (hexor-single-byte possible-char cyphertext))]
+      {:cyphertext cyphertext,
        :score (score decrypted),
-       :byte possible-byte,
+       :char possible-char,
        :plaintext decrypted})))
 
 (defn most-likely-single-byte-xor-decrypt [secret]

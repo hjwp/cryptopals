@@ -13,15 +13,15 @@
 ;; ... should produce:
 ;; 746865206b696420646f6e277420706c6179
 
+(expect "the kid don't play" (hex->string "746865206b696420646f6e277420706c6179"))
+(expect "hit the bull's eye" (hex->string "686974207468652062756c6c277320657965"))
+
 (expect
  (hex->bytes "746865206b696420646f6e277420706c6179")
  (hexor (hex->bytes "1c0111001f010100061a024b53535009181c")
         (hex->bytes "686974207468652062756c6c277320657965")))
 
-(expect
- (map int (hex->string "746865206b696420646f6e277420706c6179"))
- (hexor (hex->string "1c0111001f010100061a024b53535009181c")
-        (hex->string "686974207468652062756c6c277320657965")))
+;; single-byte xor:
 
 ;; 0x61 = a
 (expect

@@ -45,7 +45,7 @@
 (defn hex->bytes [hexstring]
   (map hexbyte->int (hexstring->hexbytes hexstring)))
 
-(defn tostring [byteseq]
+(defn bytes->string [byteseq]
   (string/join (map char byteseq)))
 
 

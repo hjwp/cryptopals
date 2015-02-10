@@ -21,14 +21,14 @@
 answer
 
 (expect
- "bacon"
- (re-find  #"bacon" (answer :plaintext)))
+ "Cooking MC's like a pound of bacon"
+  (answer :plaintext))
 
 
 (expect "secret message"
         (:plaintext (most-likely-single-byte-xor-decrypt
                      (hexor-single-byte \x (hex->bytes (string->hex "secret message"))))))
 
-(expect \y
-        (:byte (most-likely-single-byte-xor-decrypt
-                     (hexor-single-byte \y (hex->bytes (string->hex "secret message"))))))
+(expect \Y
+        (:char (most-likely-single-byte-xor-decrypt
+                     (hexor-single-byte \Y (hex->bytes (string->hex "secret message"))))))
