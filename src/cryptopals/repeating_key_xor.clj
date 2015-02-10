@@ -3,6 +3,7 @@
    [clojure.string :as string]
    [cryptopals.fixed-xor :refer :all]
    [cryptopals.decrypt-single-byte-xor :refer [most-likely-single-byte-xor-decrypt]]
+   [cryptopals.score :refer [score]]
    [cryptopals.bytes :refer :all]))
 
 
@@ -40,27 +41,48 @@
 (defn untranspose [matrix]
   (flatten (apply map list matrix)))
 
+(transposed-chars 5 [1 2 3 4 5 6 7 8])
+(untranspose [[1 4 7] [2 5 8] [3 6]])
+
 (string->hex "abc")
 
-(let [cyphertext (repeating-key-xor "abcd" (hex->bytes "this is the secret text"))
+(hexor "x" "t")
+(hexor "y" "h")
+(hexor "z" "i")
+(hexor "A" "s")
+(hexor "x" " ")
+
+
+(let [cyphertext (repeating-key-xor "xyzA" "this is a new secret phrase that is longer mate")
       keysize 4]
   (->>
    cyphertext
    (transposed-chars keysize)
-;;    (map most-likely-single-byte-xor-decrypt)
-;;    (map :plaintext)
-;;    untranspose
+   (map most-likely-single-byte-xor-decrypt)
+
+;;    (map :char)
+   (map :plaintext)
+   untranspose
+;;    string/join
 
    ))
 ;;
+(map char [21 65 21 18 4 4])
 
-
-(defn decrypt-repeating-key-xor [cyphertext]
-  (for [keysize (probable-keysizes cyphertext)]
-    (->>
+(defn- decrypt [keysize cyphertext]
+  (->>
      cyphertext
      (transposed-chars keysize)
      (map most-likely-single-byte-xor-decrypt)
      (map :plaintext)
      untranspose
-     )))
+     string/join))
+
+(defn decrypt-repeating-key-xor [cyphertext]
+  (:plaintext
+   (first
+    (sort-by :score
+             (for [keysize (probable-keysizes cyphertext)]
+               (let [decrypted (decrypt keysize cyphertext)]
+                 {:plaintext decrypted
+                  :score (score decrypted)}))))))

@@ -64,11 +64,11 @@
 
 ;; (expect
 ;;  "this is the secret text"
-;;  (decrypt-repeating-key-xor (repeating-key-xor "ab" "this is the secret text")))
+;;  (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text")))
 
 ;; (expect
 ;;  "this is the secret text"
-;;  (decrypt-repeating-key-xor (repeating-key-xor "abc" "this is the secret text")))
+;;  (decrypt-repeating-key-xor (repeating-key-xor "big" "this is the secret text")))
 
 ;;  (expect
 ;;  "this is the secret message I have encoded"
