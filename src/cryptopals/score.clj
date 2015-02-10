@@ -56,6 +56,10 @@
    (fn [letter-count] (* 100 (/ letter-count (count string))))
    (count-letters string)))
 
+(defn- count-lowercase [string]
+  (count (filter #(= (lowercase %) %) string)))
+
+
 (defn fix-string [string]
   (lowercase (reduce str (string/split string #" "))))
 
@@ -69,7 +73,8 @@
 
 (defn score [string]
   (let [fixed-string (fix-string string)]
-    (reduce + (letter-frequency-variances fixed-string))))
+    (+ (reduce + (letter-frequency-variances fixed-string))
+       (- (count string) (count-lowercase string)))))
 
 
 ;; (time (dotimes [_ 100000] (score "abcdefghijklmnopqrstuvwxyz")))

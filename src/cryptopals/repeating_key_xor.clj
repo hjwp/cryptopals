@@ -63,7 +63,7 @@
 ;;    (map :char)
    (map :plaintext)
    untranspose
-;;    string/join
+   string/join
 
    ))
 ;;

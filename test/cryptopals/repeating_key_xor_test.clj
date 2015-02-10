@@ -62,9 +62,9 @@
 ;;     Solve each block as if it was single-character XOR. You already have code to do this.
 ;;     For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
 
-;; (expect
-;;  "this is the secret text"
-;;  (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text")))
+(expect
+ "this is the secret text"
+ (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text")))
 
 ;; (expect
 ;;  "this is the secret text"

@@ -39,18 +39,22 @@
                                 (int (* 1000 (- 13 (standard-frequencies letter))))
                                 letter))])))
 
-
+;; perfect / worst scores based on letter freqs
 (expect 0 (int (score almost-perfect-string)))
 (expect 100 (int (score almost-worst-string)))
 
+;; spaces don't count
 (expect (score "abc")
         (score "a b c"))
+(expect (score "abcdef") (score "a b c def"))
 
+;; junk penalises
 (def all-letters-score (score "some letters n stuff"))
 (def letters-and-junk-score (score "some letters n junk !@#$ 1@#$% &*%# ~!#$%"))
-
 (expect #(> letters-and-junk-score %) all-letters-score)
 
+
+;; sanity-check real words are better than random letters
 (expect (>
         (score "abcdef")
         (score "hello there")))
@@ -58,5 +62,11 @@
         (score "abcdef")
         (score "a reasonably normal english sentence")))
 
-
-(expect (score "abcdef") (score "a b c def"))
+;; uppercase letters should penalise
+(expect (<
+        (score "this sentence")
+        (score "ThiS sEntenCE")))
+(expect (<
+        (score "abc")
+        (score "ABC")))
+(expect (+ 1 (score "abc") (score "Abc")))
