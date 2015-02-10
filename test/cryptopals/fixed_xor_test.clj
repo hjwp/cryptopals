@@ -14,10 +14,19 @@
 ;; 746865206b696420646f6e277420706c6179
 
 (expect
- "746865206b696420646f6e277420706c6179"
- (hexor "1c0111001f010100061a024b53535009181c" "686974207468652062756c6c277320657965"))
+ (hex->bytes "746865206b696420646f6e277420706c6179")
+ (hexor (hex->bytes "1c0111001f010100061a024b53535009181c")
+        (hex->bytes "686974207468652062756c6c277320657965")))
+
+(expect
+ (map int (hex->string "746865206b696420646f6e277420706c6179"))
+ (hexor (hex->string "1c0111001f010100061a024b53535009181c")
+        (hex->string "686974207468652062756c6c277320657965")))
 
 ;; 0x61 = a
 (expect
- (hexor "abc123" "616161")
- (hexor-single-byte \a "abc123"))
+ (hexor (hex->bytes "abc123") (hex->bytes "616161"))
+ (hexor-single-byte \a (hex->bytes "abc123")))
+
+(expect (hexor "hello" "aaaaa")
+        (hexor-single-byte \a "hello"))

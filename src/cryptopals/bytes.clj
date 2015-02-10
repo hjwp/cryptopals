@@ -42,8 +42,11 @@
 (defn hexstring->hexbytes [hexstring]
   (map string/join (partition 2 hexstring)))
 
-(defn tobytes [hexstring]
+(defn hex->bytes [hexstring]
   (map hexbyte->int (hexstring->hexbytes hexstring)))
+
+(defn tostring [byteseq]
+  (string/join (map char byteseq)))
 
 
 (defn zero-pad [desired-num binary-digits]
@@ -74,7 +77,7 @@
   (flatten (map hexbyte->bin (hexstring->hexbytes hex-string))))
 
 (defn hex->string [hexstring]
-  (string/join (map char (tobytes hexstring))))
+  (string/join (map char (hex->bytes hexstring))))
 
 
 (defn bin->hex [binary-digits]

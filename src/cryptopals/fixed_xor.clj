@@ -5,16 +5,7 @@
 
 
 (defn hexor [string1 string2]
-  (string/join
-   (map int->hexbyte
-        (map bit-xor
-             (tobytes string1)
-             (tobytes string2)))))
+  (map bit-xor (map int string1) (map int string2)))
 
-
-(defn hexor-single-byte [character hexstring]
-  (string/join
-   (map int->hexbyte
-    (map bit-xor
-      (tobytes hexstring)
-      (repeat (int character))))))
+(defn hexor-single-byte [character string]
+  (map bit-xor (map int string) (repeat (int character))))

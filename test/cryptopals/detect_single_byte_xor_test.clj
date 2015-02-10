@@ -14,7 +14,7 @@
 
 (def answer (time (first (sort-by :score decrypts))))
 
-;; answer
+answer
 
 (expect
  "jumping"

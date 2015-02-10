@@ -8,8 +8,8 @@
 
 (defn get-all-decrypts [secret]
   (for [possible-byte (map char (range 256))]
-    (let [decrypted (hex->string (hexor-single-byte possible-byte secret))]
-      {:cyphertext secret,
+    (let [decrypted (tostring (hexor-single-byte possible-byte secret))]
+      {:cypherbytes secret,
        :score (score decrypted),
        :byte possible-byte,
        :plaintext decrypted})))

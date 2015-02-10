@@ -14,7 +14,7 @@
 ;; ... has been XOR'd against a single character. Find the key, decrypt the message.
 ;; You can do this by hand. But don't: write code to do it for you.
 
-(def secret "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+(def secret (hex->bytes "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
 (def answer (most-likely-single-byte-xor-decrypt secret))
 
 (expect #(< % 100) (answer :score))
@@ -27,8 +27,8 @@ answer
 
 (expect "secret message"
         (:plaintext (most-likely-single-byte-xor-decrypt
-                     (hexor-single-byte \x (string->hex "secret message")))))
+                     (hexor-single-byte \x (hex->bytes (string->hex "secret message"))))))
 
 (expect \y
         (:byte (most-likely-single-byte-xor-decrypt
-                     (hexor-single-byte \y (string->hex "secret message")))))
+                     (hexor-single-byte \y (hex->bytes (string->hex "secret message"))))))
