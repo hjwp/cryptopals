@@ -15,14 +15,14 @@
 ;; You can do this by hand. But don't: write code to do it for you.
 
 (def secret (hex->bytes "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
-(def answer (most-likely-single-byte-xor-decrypt secret))
+(def decrypted (most-likely-single-byte-xor-decrypt secret))
 
-(expect #(< % 100) (answer :score))
-answer
+(expect #(< % 100) (decrypted :score))
+decrypted
 
 (expect
  "Cooking MC's like a pound of bacon"
-  (answer :plaintext))
+  (decrypted :plaintext))
 
 
 (expect "secret message"
@@ -32,3 +32,19 @@ answer
 (expect \Y
         (:char (most-likely-single-byte-xor-decrypt
                      (hexor-single-byte \Y (hex->bytes (string->hex "secret message"))))))
+
+; Detect single-character XOR
+; One of the 60-character strings in detect-single-byte-xor.txt has been encrypted by single-character XOR.
+; Find it.
+
+(def encrypted-strings-file (slurp "resources/detect-single-byte-xor.txt"))
+(def encrypted-strings (map hex->string (string/split encrypted-strings-file #"\n")))
+
+(def decrypts (pmap most-likely-single-byte-xor-decrypt encrypted-strings))
+(def answer (time (first (sort-by :score decrypts))))
+
+answer
+
+(expect
+ "Now that the party is jumping\n"
+ (:plaintext answer))
