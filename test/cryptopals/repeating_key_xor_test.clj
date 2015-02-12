@@ -62,16 +62,42 @@
 ;;     Solve each block as if it was single-character XOR. You already have code to do this.
 ;;     For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
 
+(expect "this is the secret text"
+        (in (map :plaintext (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text")))))
+
+(expect "this is the secret text"
+       (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text")))
+
+;; (expect 2
+;;         (map :keysize (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text"))))
+
+
+
 ;; (expect "this is the secret text"
 ;;         (:plaintext (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text"))))
 ;; (expect 2
 ;;         (:keysize (decrypt-repeating-key-xor (repeating-key-xor "xY" "this is the secret text"))))
+
+(expect "this is the secret text of our message"
+        (decrypt-repeating-key-xor (repeating-key-xor "big" "this is the secret text of our message")))
+
+;; (expect 3
+;;         (map :keysize (decrypt-repeating-key-xor (repeating-key-xor "big" "this is the secret text"))))
+;; (expect 3
+;;         (map :score (decrypt-repeating-key-xor (repeating-key-xor "big" "this is the secret text"))))
+
 
 ;; (expect "this is the secret text"
 ;;         (:plaintext (decrypt-repeating-key-xor (repeating-key-xor "big" "this is the secret text"))))
 ;; (expect 3
 ;;         (:keysize (decrypt-repeating-key-xor (repeating-key-xor "big" "this is the secret text"))))
 
+
+;; (expect "this is the secret message I have encoded with a longer key"
+;;         (map :plaintext (decrypt-repeating-key-xor (repeating-key-xor "iceicebaby" "this is the secret message I have encoded with a longer key" ))))
+
+;; (expect 10
+;;         (map :keysize (decrypt-repeating-key-xor (repeating-key-xor "iceicebaby" "this is the secret message I have encoded with a longer key" ))))
 
 ;; (expect "this is the secret message I have encoded"
 ;;         (:plaintext (decrypt-repeating-key-xor (repeating-key-xor "iceicebaby" "this is the secret message I have encoded" ))))

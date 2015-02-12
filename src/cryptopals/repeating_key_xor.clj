@@ -30,7 +30,7 @@
 (defn probable-keysizes [cyphertext]
   (let [max-keysize (int (/ (count cyphertext) 4))
         possible-keysizes (range 2 (+ 1 (min 40 max-keysize)))]
-    (take 3 (reverse (sort-by
+    (take 4 (reverse (sort-by
                       #(keysize-score % cyphertext)
                       possible-keysizes)))))
 
@@ -54,10 +54,12 @@
 
 
 (defn decrypt-repeating-key-xor [cyphertext]
-  (first
-   (sort-by :score
-            (for [keysize (probable-keysizes cyphertext)]
-              (let [decrypted (decrypt keysize cyphertext)]
-                {:keysize keysize
-                 :plaintext decrypted
-                 :score (score decrypted)})))))
+  (->>
+   (for [keysize (probable-keysizes cyphertext)]
+     (let [decrypted (decrypt keysize cyphertext)]
+       {:keysize keysize
+        :plaintext decrypted
+        :score (score decrypted)}))
+  (sort-by :score)
+;;   last
+  ))

@@ -32,14 +32,11 @@
    \y 1.974
    \z 0.074})
 
-(def letters (keys standard-frequencies))
+(def letters (set (keys standard-frequencies)))
 
 (defn map-over-hash [function hashmap]
   (into {} (for [[key, val] hashmap]
              [key (function val)])))
-
-(defn in [haystack needle]
-  (some #(= % needle) haystack))
 
 (defmulti lowercase (fn [string-or-char] (if (char? string-or-char) :char :string)))
 (defmethod lowercase :char [character] (first (string/lower-case character)))
@@ -56,9 +53,10 @@
    (fn [letter-count] (* 100 (/ letter-count (count string))))
    (count-letters string)))
 
-(defn- count-lowercase [string]
-  (count (filter #(= (lowercase %) %) string)))
-
+(defn count-lowercase [string]
+  (let [letters-or-space (conj letters \space)]
+  (count (filter letters-or-space string)))
+  )
 
 (defn fix-string [string]
   (lowercase (reduce str (string/split string #" "))))
@@ -74,7 +72,7 @@
 (defn score [string]
   (let [fixed-string (fix-string string)]
     (+ (reduce + (letter-frequency-variances fixed-string))
-       (- (count string) (count-lowercase string)))))
+       (* 2 (- (count string) (count-lowercase string))))))
 
 
 ;; (time (dotimes [_ 100000] (score "abcdefghijklmnopqrstuvwxyz")))

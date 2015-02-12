@@ -28,16 +28,19 @@
 
 
 (def almost-perfect-string
-  (string/join (for [letter letters]
-                 [(string/join (repeat
-                                (int (* 1000 (standard-frequencies letter)))
-                                letter))])))
+  (string/join
+   (flatten (for [letter letters]
+              [(string/join (repeat
+                             (int (* 100 (standard-frequencies letter)))
+                             letter))]))))
 
 (def almost-worst-string
-  (string/join (for [letter letters]
-                 [(string/join (repeat
-                                (int (* 1000 (- 13 (standard-frequencies letter))))
-                                letter))])))
+  (string/join
+   (flatten (for [letter letters]
+              [(string/join (repeat
+                             (int (* 100 (- 13 (standard-frequencies letter))))
+                             letter))]))))
+
 
 ;; perfect / worst scores based on letter freqs
 (expect 0 (int (score almost-perfect-string)))
@@ -51,22 +54,28 @@
 ;; junk penalises
 (def all-letters-score (score "some letters n stuff"))
 (def letters-and-junk-score (score "some letters n junk !@#$ 1@#$% &*%# ~!#$%"))
-(expect #(> letters-and-junk-score %) all-letters-score)
+(expect (> letters-and-junk-score all-letters-score))
 
 
 ;; sanity-check real words are better than random letters
 (expect (>
-        (score "abcdef")
-        (score "hello there")))
+         (score "abcdef")
+         (score "hello there")))
 (expect (>
-        (score "abcdef")
-        (score "a reasonably normal english sentence")))
+         (score "abcdef")
+         (score "a reasonably normal english sentence")))
 
 ;; uppercase letters should penalise
 (expect (<
-        (score "this sentence")
-        (score "ThiS sEntenCE")))
+         (score "this sentence")
+         (score "ThiS sEntenCE")))
 (expect (<
-        (score "abc")
-        (score "ABC")))
+         (score "abc")
+         (score "ABC")))
 (expect (+ 1 (score "abc") (score "Abc")))
+
+
+(expect (<
+         (score "this is the secret text")
+         (score "HionNO!ruEOdeoES``1uceT")))
+
