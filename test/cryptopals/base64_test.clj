@@ -1,5 +1,6 @@
 (ns cryptopals.base64-test
   (:require [expectations :refer [expect]]
+            [cryptopals.bytes :refer :all]
             [cryptopals.base64 :refer :all]))
 
 ;; base64 char of an integer
@@ -23,5 +24,10 @@
 (expect "4d616e" (base64->hexstring "TWFu"))  ; from wikipedia. 0x4d616e = "Man"
 
 (expect
- "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+ (string->hex "I'm killing your brain like a poisonous mushroom")
  (base64->hexstring "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"))
+
+;; non-base64 chars are ignored
+(expect
+ (string->hex "I'm killing your brain like a poisonous mushroom")
+ (base64->hexstring "=SSdtIGtpbGxpbmcgeW91ciB\nicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t="))

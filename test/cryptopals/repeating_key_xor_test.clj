@@ -1,6 +1,8 @@
 (ns cryptopals.repeating-key-xor-test
   (:require [expectations :refer :all]
+            [clojure.string :as string]
             [cryptopals.bytes :refer :all]
+            [cryptopals.base64 :refer :all]
             [cryptopals.fixed-xor :refer :all]
             [cryptopals.repeating-key-xor :refer :all]))
 
@@ -104,3 +106,15 @@
 
 ;; (expect 10
 ;;         (:keysize (decrypt-repeating-key-xor (repeating-key-xor "iceicebaby" "this is the secret message I have encoded" ))))
+
+(def rxorfile (slurp "resources/break-repeating-key-xor.txt"))
+
+rxorfile
+(string/replace "abc\ndef\nghi" #"\s" "")
+
+
+(def derxored (decrypt-repeating-key-xor
+               (hex->string (base64->hexstring
+                             rxorfile))))
+
+(map :plaintext derxored)

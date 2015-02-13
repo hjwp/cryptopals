@@ -15,16 +15,25 @@
   (into {} (for [[key val] int->base64char] [val key])))
 
 
-(defn base64->hexstring [b64string]
+(defn base64->bytes [b64string]
   (->>
    b64string
    (map base64char->int)
+   (filter (comp not nil?))
    (map int->bin)
    (map #(take-last 6 %))
    flatten
    (zero-pad 8)
    (partition 8)
-   (map bin->hex)
+   (map bin->int)
+   flatten))
+
+
+(defn base64->hexstring [b64string]
+  (->>
+   b64string
+   base64->bytes
+   (map int->hexbyte)
    string/join))
 
 
